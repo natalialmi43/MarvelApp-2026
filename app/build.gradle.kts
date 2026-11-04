@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.marvelapp"
+    namespace = "edu.iesam.marvelapp"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.marvelapp"
+        applicationId = "edu.iesam.marvelapp"
         minSdk = 26
         targetSdk = 37
         versionCode = 1
@@ -39,7 +39,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
     implementation(libs.gson)
-    implementation(libs.kotlinx.serializationJson)
+    implementation(libs.kotlinx.serialization.json)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
