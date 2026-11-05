@@ -15,6 +15,7 @@ class SuperHeroXmlLocalDataSource(
 ) {
 
     private val keySuperHero: String = "superhero"
+    private val ttl: Long = 5*60*1000
 
     //-- Me creo la fuente de datos xml: SharedPreferences.
     val sharedPref = context.getSharedPreferences(
