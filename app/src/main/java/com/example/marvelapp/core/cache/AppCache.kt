@@ -1,0 +1,32 @@
+package com.example.marvelapp.core.cache
+
+import android.content.Context
+import com.example.marvelapp.core.time.AppTime
+import edu.iesam.marvelapp.R
+
+interface AppCache {
+    fun updateTime(key: String)
+    fun isExpired (key: String, ttl: Long): Boolean
+
+}
+
+class AppCacheTTL(
+    private val context: Context,
+    private val appTime: AppTime ) : AppCache{
+
+    val sharedPref = context.getSharedPreferences(context.getString(R.string.app_cache), Context.MODE_PRIVATE)
+
+
+    override fun updateTime(key: String) {
+        sharedPref.edit().apply(){
+            putLong(key, appTime.currentTimetoLong())
+            apply()
+        }
+
+    }
+
+    override fun isExpired(key: String, ttl: Long): Boolean {
+        val timeSaved = sharedPref.getLong(key, -1)
+        return (appTime.currentTimetoLong()-timeSaved) >= ttl
+    }
+}
