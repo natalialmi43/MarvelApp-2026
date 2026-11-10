@@ -1,4 +1,4 @@
-package com.example.marvelapp
+package edu.iesam.marvelapp
 
 import org.junit.Test
 

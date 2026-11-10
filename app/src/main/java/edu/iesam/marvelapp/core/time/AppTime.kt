@@ -1,4 +1,4 @@
-package com.example.marvelapp.core.time
+package edu.iesam.marvelapp.core.time
 
 interface AppTime {
     fun currentTimetoLong() : Long

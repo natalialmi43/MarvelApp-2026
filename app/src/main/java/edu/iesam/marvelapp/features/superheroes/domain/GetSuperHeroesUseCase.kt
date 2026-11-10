@@ -1,4 +1,4 @@
-package com.example.marvelapp.features.superheroes.domain
+package edu.iesam.marvelapp.features.superheroes.domain
 
 class GetSuperHeroesUseCase (private val superHeroRepository: SuperHeroRepository) {
 

@@ -1,7 +1,7 @@
-package com.example.marvelapp.core.cache
+package edu.iesam.marvelapp.core.cache
 
 import android.content.Context
-import com.example.marvelapp.core.time.AppTime
+import edu.iesam.marvelapp.core.time.AppTime
 import edu.iesam.marvelapp.R
 
 interface AppCache {
