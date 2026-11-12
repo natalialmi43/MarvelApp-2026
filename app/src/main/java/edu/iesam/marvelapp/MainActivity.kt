@@ -4,17 +4,41 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
+import edu.iesam.marvelapp.core.cache.AppCache
+import edu.iesam.marvelapp.core.cache.AppCacheTTL
+import edu.iesam.marvelapp.core.serialization.KotlinJsonSerializer
+import edu.iesam.marvelapp.core.time.LocalAppTime
+import edu.iesam.marvelapp.features.superheroes.data.SuperHeroDataRepository
+import edu.iesam.marvelapp.features.superheroes.data.local.xml.SuperHeroXmlLocalDataSource
+import edu.iesam.marvelapp.features.superheroes.domain.GetSuperHeroesUseCase
+import edu.iesam.marvelapp.features.superheroes.domain.SuperHero
 import edu.iesam.marvelapp.features.superheroes.presentation.SuperHeroListViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: SuperHeroListViewModel by viewModels()
+
+    private val viewModel: SuperHeroListViewModel by viewModels{
+        SuperHeroListViewModel.factory(
+            GetSuperHeroesUseCase(
+                SuperHeroDataRepository(
+                    SuperHeroXmlLocalDataSource(
+                        this,
+                        KotlinJsonSerializer.create(),
+                        AppCacheTTL(this, LocalAppTime())
+                    )
+                )
+            )
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         initObserver()
 
-
         viewModel.loadSuperHeroes()
-
 
     }
 
@@ -41,6 +63,7 @@ class MainActivity : AppCompatActivity() {
             Log.d ("MainActiviy", uiState.isLoading.toString())
             bind(uiState)
         }
+
     }
 
 
@@ -62,10 +85,23 @@ class MainActivity : AppCompatActivity() {
             if(superHeroes.isEmpty()){
                 //muestro pantalla de listado vacio
             } else{
-                // muestro el listado de superheroes
+                renderUi(superHeroes.first())
             }
 
         }
+
+    }
+
+    private fun renderUi( superHero: SuperHero){
+
+        val superHeroLayout = findViewById<ConstraintLayout>(R.id.superHero_layout)
+
+
+        val labelNameSuperHero =superHeroLayout.findViewById<TextView>(R.id.superHero_name)
+        labelNameSuperHero.text = superHero.name
+
+        val labelSlugSuperHero = superHeroLayout.findViewById<TextView>(R.id.superHero_slug)
+        labelSlugSuperHero.text = superHero.slug
 
     }
 

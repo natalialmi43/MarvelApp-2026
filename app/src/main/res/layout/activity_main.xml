@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Listado-->
+    <include
+        android:id="@+id/superHero_layout"
+        layout="@layout/view_superhero_item"/>
+
     <!-- loading-->
 
 
@@ -14,13 +19,6 @@
     <include
         android:id="@+id/layout_error"
         layout="@layout/view_error"/>
-
-
-    <!-- loading-->
-    <include
-        android:id="@+id/layout_loading"
-        />
-
 
 
 </FrameLayout>

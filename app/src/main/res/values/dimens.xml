@@ -4,6 +4,9 @@
     <dimen name="error_ic_margin_top"> 50dp </dimen>
     <dimen name="error_text_size"> 50dp </dimen>
     <dimen name="error_text_margin_top"> 50dp </dimen>
+    <dimen name="image_xl"> 120dp </dimen>
+    <dimen name="spacing_vertical"> 16dp </dimen>
+    <dimen name="spacing_horizontal"> 16dp </dimen>
 
 
 
