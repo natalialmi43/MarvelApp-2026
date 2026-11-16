@@ -1,6 +1,7 @@
 package com.example.marvelapp.features.superheroes.data.local.xml
 
 import android.content.Context
+import com.example.marvelapp.core.cache.AppCache
 import com.example.marvelapp.features.superheroes.domain.SuperHero
 import edu.iesam.marvelapp.R
 import edu.iesam.marvelapp.core.serialization.JsonSerializer
@@ -11,7 +12,8 @@ import edu.iesam.marvelapp.core.serialization.JsonSerializer
  */
 class SuperHeroXmlLocalDataSource(
     private val context: Context,
-    private val serializer: JsonSerializer<List<SuperHero>>
+    private val serializer: JsonSerializer<List<SuperHero>>,
+    private val appCache: AppCache
 ) {
 
     private val keySuperHero: String = "superhero"
@@ -31,12 +33,15 @@ class SuperHeroXmlLocalDataSource(
             putString(keySuperHero, serializer.toJson(superHeroes))
             apply()
         }
+        appCache.updateTime(keySuperHero)
     }
 
     fun findAll(): List<SuperHero> {
-        val jsonList: String? = sharedPref.getString(keySuperHero, null)
-        jsonList?.let {
-            return serializer.fromJson(it)
+        if(!appCache.isExpired(keySuperHero, ttl)){
+            val jsonList: String? = sharedPref.getString(keySuperHero, null)
+            jsonList?.let {
+                return serializer.fromJson(it)
+            }
         }
         return emptyList()
     }
@@ -55,4 +60,22 @@ class SuperHeroXmlLocalDataSource(
             apply()
         }
     }
+
+    fun update(superHero: SuperHero){
+        //superheroes contiene todos los sh EXCEPTO el que quiero modificar.
+        //El list no deja añadir por eso se cambia a mutableList
+        val superHeroes = findAll().filterNot { it.id == superHero.id}.toMutableList()
+
+        //Aqui añadimos el nuevo SH a la lista
+        superHeroes.add(superHero)
+
+        // guardamos en sharedPref
+        save(superHeroes)
+
+
+
+
+
+    }
+
 }
